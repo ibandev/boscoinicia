@@ -1,0 +1,43 @@
+{% extends '::adminBase.html.twig' %}
+        
+		{% block menu_lateral %}
+		<p>		
+			Inicio<br>
+			<a href="{{ path('salesianos_admin_candidatos') }}">Candidatos</a><br>                 
+			<a href="{{ path('salesianos_admin_empresas') }}">Empresas</a><br>
+			<a href="{{ path('salesianos_admin_ofertas') }}">Ofertas</a><br>
+			<a href="{{ path('salesianos_admin_blog') }}">Blog</a><br>
+		</p>
+		{% endblock menu_lateral %}
+
+		{% block contenido %}
+			<div class="admin widget half">
+				<a href="#">Cambiar datos de acceso del Administrador</a>
+			</div>
+			<div class="admin widget half">
+				<h3>Estadísticas</h3>
+				<table id="estadisticas">
+					<tr>
+					<td class="label">Candidatos registrados </td><td>asd</td>
+					</tr>
+					<tr>
+					<td class="label">Empresas registradas </td><td>asd</td>
+					</tr>
+					<tr>
+					<td class="label orange">Empresas pendientes de validación </td><td>sdsd</td>
+					</tr>
+					<tr>
+					<td class="label">Ofertas activas </td><td>asd</td>
+					</tr>
+					<tr>
+					<td class="label orange">Ofertas pendientes de finalización </td><td></td>
+					</tr>
+				</table>
+			</div>
+			<div class="admin widget half">
+
+			</div>
+			<div class="admin widget half">
+
+			</div>
+		{% endblock contenido %}

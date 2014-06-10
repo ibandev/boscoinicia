@@ -1,0 +1,15 @@
+{% extends '::adminBase.html.twig' %}
+        
+		{% block menu_lateral %}
+		<p>		
+			<a href="{{ path('salesianos_admin_homepage') }}">Inicio</a><br>
+			<a href="{{ path('salesianos_admin_candidatos') }}">Candidatos</a><br>                 
+			<a href="{{ path('salesianos_admin_empresas') }}">Empresas</a><br>
+			Ofertas<br>
+			<a href="{{ path('salesianos_admin_blog') }}">Blog</a><br>
+		</p>	
+		{% endblock menu_lateral %}
+
+		{% block contenido %}
+
+		{% endblock contenido %}
