@@ -1,5 +1,34 @@
 {% extends '::adminBase.html.twig' %}
         
+        {% block javascripts %}
+        	{{ parent() }}
+        	<script src={{asset('bundles/salesianosmain/js/fancybox/jquery.fancybox.pack.js')}}></script>
+        	<script type="text/javascript">
+        		$(document).ready(function() {
+        			$(".fancybox").fancybox({
+        				arrows        : false,
+        				scrolling     : 'auto',	
+        				type		  : 'inline',
+        				wrapCSS		  : 'fancy_custom',
+        				// Activa/desactiva el menú superior en dispositivos móviles
+        				// para que pueda mostrarse el fancybox completo
+        				afterClose : function() {
+        						        $('#titleBar').show();
+        						        return;
+        						    },
+        				beforeShow : function() {
+        						        $('#titleBar').hide();
+        						        return;
+        				    		},
+        			});
+        		});
+        	</script>
+        {% endblock javascripts %}
+        {% block stylesheets %}
+			{{ parent() }}
+			<link rel="stylesheet" href={{asset('bundles/salesianosmain/css/jquery.fancybox.css')}} />
+			<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+		{% endblock stylesheets %}
 		{% block menu_lateral %}
 		<p>		
 			<a href="{{ path('salesianos_admin_homepage') }}">Inicio</a><br>
@@ -11,5 +40,44 @@
 		{% endblock menu_lateral %}
 
 		{% block contenido %}
+		<div id="ofertas">
+			<div id="pagination_order">
+				Ordenar por: 
+				{{ knp_pagination_sortable(pagination, 'Puesto', 'o.puesto') }} / 
+				{{ knp_pagination_sortable(pagination, 'Sector', 'o.sector') }} / 
+				{{ knp_pagination_sortable(pagination, 'Fecha Inicio', 'o.fecha_ini') }} / 
+				{{ knp_pagination_sortable(pagination, 'Fecha Fin', 'o.fecha_fin') }} / 
+				<div class="count">
+				    {{ pagination.getTotalItemCount }} ofertas registradas
+				</div>		
+			</div>
+			<ul class="big-image-list">
+			{% if pagination is not null %}
+				{% for oferta in pagination %}
+				        <li class="candidato_mini">
+				        		<div class="nombre"><a class="fancybox" href="#of{{ oferta.getId() }}">{{ oferta.getEmpresa().getNombre() }} &middot; {{ oferta.getPuesto() }}</a></div>
+				        		<div class="opciones">
+				        			<a href="{{path('salesianos_admin_empresa_validate', { 'id_empresa': oferta.getId() }) }}">
+				        				{% if oferta.hasFinished() %}Finalidasdadzada{% else %}Activdsdsd{% endif %}
+				        			</a> / 
+				        			<a href="{{path('salesianos_admin_empresa_edit', { 'id_empresa': oferta.getId() }) }}">Editar</a> / 
+				        			<a href="{{path('salesianos_admin_empresa_remove', { 'id_empresa': oferta.getId() }) }}">Eliminar</a>
+				        		</div>
+				        </li>
+				        <div style="display:none">
+				        	<div id="of{{ oferta.getId() }}">
+				        		{{ include(
+				        		    'SalesianosMainBundle:Main:oferta.html.twig',
+				        		    { 'oferta': oferta }
+				        		) }}
+				        	</div>
+				        </div>
+				{% endfor %}
+			{% endif %}								
+			</ul>
+			<div class="navigation">
+			    {{ knp_pagination_render(pagination) }}
+			</div>	
+		</div>
 
 		{% endblock contenido %}

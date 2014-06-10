@@ -79,14 +79,26 @@ class AdminController extends Controller
 
     public function ofertasShowAction()
     {
-        return $this->render('SalesianosMainBundle:Admin:ofertas.html.twig');
+        $paginator  = $this->get('knp_paginator');
+        $repository = $this->getDoctrine()->getRepository('SalesianosMainBundle:Oferta');
+        $queryBuilder = $repository->createQueryBuilder('o')->orderBy('o.fecha_ini', 'DESC');
+        $ofertas = $queryBuilder->getQuery(); 
+        $pagination = $paginator->paginate(
+                        $ofertas,
+                        $this->get('request')->query->get('page', 1)/*page number*/,
+                        30/*limit per page*/
+                    );
+        return $this->render('SalesianosMainBundle:Admin:ofertas.html.twig', array(
+                    'pagination' => $pagination,
+                    'ofertas' => $ofertas,
+        ));
     }
 
     public function blogShowAction()
     {
         $paginator  = $this->get('knp_paginator');
         $repository = $this->getDoctrine()->getRepository('SalesianosMainBundle:Articulo');
-        $queryBuilder = $repository->createQueryBuilder('a');
+        $queryBuilder = $repository->createQueryBuilder('a')->orderBy('a.fecha_publi', 'DESC');
         $articulos = $queryBuilder->getQuery();     
         $pagination = $paginator->paginate(
                         $articulos,
@@ -255,6 +267,10 @@ class AdminController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->persist($empresa);
         $em->flush();
-        return $this->redirect($this->generateUrl('salesianos_admin_empresas'));        
+        return $this->redirect($this->generateUrl('salesianos_admin_empresas'));      
     }
+
+    
+
+
 }
